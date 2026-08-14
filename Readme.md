@@ -48,10 +48,10 @@ The Postman collection covers happy path flows, edge cases, negative scenarios, 
 ## 🗄️Database Integrity Verification (PostgreSQL)
 To guarantee end-to-end data consistency between the API layer and the relational database, advanced SQL verification scripts are provided under /database/:
 
-*1**Schema & Data Integrity:** Primary/Foreign key constraints and data type setup.
-*2**Missing Fulfillment Audit:** Indetifies transactions marked as '"COMPLETED"' whose '"item_id"' failed to reflect in '"user_inventory"'(**LEFT JOIN**/**IS NULL**).
-*3**Duplicate Payment:** Uses SQL aggregations (**COUNT**,**HAVING**) to detect duplicate payment processing within identical timeframes.
-*4**Orphan Inventory Clean-up:** Audits inventory ítems lacking active user or valid transaction references.
+* 1 **Schema & Data Integrity:** Primary/Foreign key constraints and data type setup.
+* 2 **Missing Fulfillment Audit:** Indetifies transactions marked as '"COMPLETED"' whose '"item_id"' failed to reflect in '"user_inventory"'(**LEFT JOIN**/**IS NULL**).
+* 3 **Duplicate Payment:** Uses SQL aggregations (**COUNT**,**HAVING**) to detect duplicate payment processing within identical timeframes.
+* 4 **Orphan Inventory Clean-up:** Audits inventory ítems lacking active user or valid transaction references.
 
 ---
 
