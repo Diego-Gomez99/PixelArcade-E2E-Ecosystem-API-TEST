@@ -1,0 +1,34 @@
+{
+	"id": "b8c082b7-16ea-468d-9b2b-f5fa2a89d9d5",
+	"name": "Staging_Env",
+	"values": [
+		{
+			"key": "baseUrl",
+			"value": "https://7edcac07-1549-4a7c-92e3-2ce1f262a5d4.mock.pstmn.io",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "user_id",
+			"value": "101",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "item_id",
+			"value": "1",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "purchase_id",
+			"value": "501",
+			"type": "default",
+			"enabled": true
+		}
+	],
+	"color": null,
+	"_postman_variable_scope": "environment",
+	"_postman_exported_at": "2026-08-12T20:51:30.857Z",
+	"_postman_exported_using": "Postman/12.23.1"
+}

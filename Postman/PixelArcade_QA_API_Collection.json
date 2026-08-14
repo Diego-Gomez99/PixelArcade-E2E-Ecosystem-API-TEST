@@ -1,0 +1,332 @@
+{
+  "info": {
+    "_postman_id": "4f38f09d-84bf-473f-8e52-ef34065f4f04",
+    "name": "PixelArcade_QA_API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "40191553"
+  },
+  "item": [
+    {
+      "name": "02_Store_&_Checkout",
+      "item": [
+        {
+          "name": "Process_Checkout",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// ========================================================================\r",
+                  "// TEST SUITE: Checkout & Fulfillment Initiation\r",
+                  "// ========================================================================\r",
+                  "\r",
+                  "// Validate Status Code 201 Created (200 Ok)\r",
+                  "pm.test(\"Status code is 201 Created\", function () {\r",
+                  "    pm.expect(pm.response.code).to.be.oneOf([200,201]);\r",
+                  "});\r",
+                  "\r",
+                  "// Validate time answer response less than 500ms\r",
+                  "pm.test(\"Response time is less than 500ms\", function () {\r",
+                  "    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+                  "    });\r",
+                  "\r",
+                  "// Save purchase_id dynaminacally and save it in the eviroment\r",
+                  "pm.test(\"Save purchase_id in environment\", function () {\r",
+                  "    var jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData).to.have.property(\"purchase_id\");\r",
+                  "\r",
+                  "    //Asign the purchase_id to the environment variable\r",
+                  "    pm.environment.set(\"purchase_id\", jsonData.purchase_id);\r",
+                  "    console.log(\"Captured Purchase ID\" + jsonData.purchase_id);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"user_id\": {{user_id}},\r\n    \"item_id\": {{item_id}},\r\n    \"payment_method\": \"CREDIT_CARD\",\r\n    \"idempotency_key\": \"IDEMP-{{$guid}}\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/purchases/checkout",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "purchases",
+                "checkout"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Process_Checkout",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "\r\n{\r\n  \"user_id\": {{user_id}},\r\n  \"item_id\": {{item_id}},\r\n  \"payment_method\": \"CREDIT_CARD\",\r\n  \"idempotency_key\": \"IDEMP-{{$guid}}\"\r\n}\r\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/purchases/checkout",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "purchases",
+                    "checkout"
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "",
+              "header": [],
+              "cookie": [
+                {
+                  "expires": "Invalid Date",
+                  "domain": "",
+                  "path": ""
+                }
+              ],
+              "body": "{\r\n  \"status\": \"SUCCESS\",\r\n  \"purchase_id\": 501,\r\n  \"user_id\": 101,\r\n  \"item_id\": 1,\r\n  \"message\": \"Purchase completed successfully\"\r\n}"
+            }
+          ]
+        },
+        {
+          "name": "Process_Checkout_Invalid_Missing_Data",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// ========================================================================\r",
+                  "// TEST SUITE: Invalid Missing Data (400 Bad Request)\r",
+                  "// ========================================================================\r",
+                  "\r",
+                  "// Validate Status Code is 400 Bad Request\r",
+                  "pm.test(\"Status code is 400 Bad Request\", function () {\r",
+                  "   pm.response.to.have.status(400);\r",
+                  "});\r",
+                  "\r",
+                  "// Validate the answer contains an error property\r",
+                  "pm.test(\"Response contains error property\", function () {\r",
+                  "    const responseData = pm.response.json();\r",
+                  "    pm.expect(responseData).to.have.property(\"error\");\r",
+                  "}); \r",
+                  "\r",
+                  "// Validate the time response\r",
+                  "pm.test(\"Response time is less than 500ms\", function () {\r",
+                  "    pm.expect(pm.response.responseTime).to.be.below(700);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "x-mock-response-code",
+                "value": "400",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"item_id\": 1\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/purchases/checkout",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "purchases",
+                "checkout"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Process_Checkout_Invalid_Missing_Data",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "x-mock-response-code",
+                    "value": "400",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"item_id\": 1\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/purchases/checkout?x-mock-response-code=400",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "purchases",
+                    "checkout"
+                  ],
+                  "query": [
+                    {
+                      "key": "x-mock-response-code",
+                      "value": "400",
+                      "type": "text"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "",
+              "header": [],
+              "cookie": [
+                {
+                  "expires": "Invalid Date",
+                  "domain": "",
+                  "path": ""
+                }
+              ],
+              "body": "{\r\n  \"error\": \"Bad Request\",\r\n  \"message\": \"Missing required field: user_id\"\r\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "03_Inventory_Fulfillment",
+      "item": [
+        {
+          "name": "Get User Inventory",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// ========================================================================\r",
+                  "// TEST SUITE: Inventory Fulfillment Verification\r",
+                  "// ========================================================================\r",
+                  "\r",
+                  "// Test Case 1: Verify the response status code is 200\r",
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "    });\r",
+                  "\r",
+                  "// Test Case 2: JSON Structure\r",
+                  "pm.test(\"response has user_id and Inventory list\", function () {\r",
+                  "    var jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData).to.have.property('user_id');\r",
+                  "    pm.expect(jsonData.inventory).to.be.an(\"array\");\r",
+                  "    });\r",
+                  "\r",
+                  "// Test Case 3: Data Integrity: Verify if item_id: 1 is accredited\r",
+                  "    pm.test(\"item_id: 1 is accredited\", function () {\r",
+                  "        var jsonData = pm.response.json();\r",
+                  "        var expectedItemid = pm.environment.get(\"item_id\");\r",
+                  "\r",
+                  "        var hasItem = jsonData.inventory.some(function(item){\r",
+                  "            return item.item_id == expectedItemid;\r",
+                  "        });\r",
+                  "\r",
+                  "        pm.expect(hasItem).to.be.true;\r",
+                  "    });    \r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/inventory/{{user_id}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "inventory",
+                "{{user_id}}"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Get User Inventory",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/inventory/{{user_id}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "inventory",
+                    "{{user_id}}"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "description": "",
+                  "type": "text"
+                }
+              ],
+              "cookie": [
+                {
+                  "expires": "Invalid Date",
+                  "domain": "",
+                  "path": ""
+                }
+              ],
+              "body": "{\n    \"user_id\": 101,\n    \"inventory\": [\n        {\n            \"inventory_id\": 9001,\n            \"item_id\": 1,\n            \"item_name\": \"Vault Key Pack\",\n            \"granted_at\": \"2026-08-11T17:00:00Z\"\n        }\n    ]\n}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
