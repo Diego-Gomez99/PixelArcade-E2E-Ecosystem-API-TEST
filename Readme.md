@@ -55,26 +55,23 @@ To guarantee end-to-end data consistency between the API layer and the relationa
 
 ---
 
-** 🚀Headless Execution via Newman (CLI)
+## 🚀Headless Execution via Newman (CLI)
 
 **Prerequisites**
 
 * Node.js(v18+)
 * Newman and the 'htmlextra' reporter installed globally:
   
-   → npm install -g newman newman-reporter-htmlextra
+    → npm install -g newman newman-reporter-htmlextra
 
-**Run Suite % Generate HTML Report
+**Run Suite & Generate HTML Report**
 Run the following command from the project root directory:
 
-    → newman run postman/PixelArcade_QA_API.postman_collection.json \
-  -e postman/Staging_Env.json \
-  -r "cli,htmlextra" \
-  --reporter-htmlextra-export reports/reporte-api.html
-
+    → newman run postman/PixelArcade_QA_API.postman_collection.json \-e postman/Staging_Env.json \ -r "cli,htmlextra" \--reporter-htmlextra-export reports/reporte-api.html
+  
 ---
 
-** 🔎QA Analysis & Root Cause Diagnosis (RCA)
+## 🔎QA Analysis & Root Cause Diagnosis (RCA)
 During headless executions via Newman against simulated enviroments (Postman Mock Servers):
 
 * **Cloud Latency & Cold Starts:** Fluctuations in response time assertions (e.g '> 500ms' or initial server warm-up delays) may occur.
